@@ -1,0 +1,32 @@
+import win32com.client as win32
+
+# Read email addresses from a text file
+file_path = 'C:\\path\\to\\your\\emails.txt'  # Change to your file's path
+with open(file_path, 'r') as file:
+    emails = [line.strip() for line in file if line.strip()]
+
+# Connect to Outlook
+outlook = win32.Dispatch('outlook.application')
+namespace = outlook.GetNamespace('MAPI')
+
+# Compose the email
+subject = "Exciting Marketing Offer!"
+body = """
+Hello,
+
+We are excited to share our latest marketing offer with you. 
+Please contact us for more details.
+
+Best regards,
+Your Marketing Team
+"""
+
+# Send email to each address
+for email in emails:
+    mail = outlook.CreateItem(0)
+    mail.To = email
+    mail.Subject = subject
+    mail.Body = body
+    mail.Send()
+
+print("Emails have been sent successfully!")
